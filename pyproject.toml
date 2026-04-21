@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gtic"
+version = "0.1.0"
+description = "GPU-accelerated topographic insolation calculator"
+readme = "README.md"
+license = "BSD-3-Clause"
+requires-python = ">=3.9"
+authors = [
+    { name = "glide-ism" },
+]
+dependencies = [
+    "cupy",
+    "numpy",
+    "xarray",
+    "pysolar",
+    "pytz",
+    "tqdm",
+]
+
+[project.optional-dependencies]
+examples = [
+    "matplotlib",
+    "netCDF4",
+]
+
+[project.urls]
+Repository = "https://github.com/glide-ism/gtic"
+
+[tool.setuptools.packages.find]
+include = ["gtic*"]
+
+[tool.setuptools.package-data]
+"gtic" = ["cuda/*.cu"]
