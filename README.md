@@ -18,9 +18,13 @@ correction. Solar positions are computed with [pysolar](https://pysolar.readthed
 
 ## Requirements
 
-- Python >= 3.9
+- Python >= 3.8
 - A CUDA-capable GPU and the [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit)
 - [CuPy](https://cupy.dev/) (compiled against your CUDA version)
+
+Core runtime dependencies (installed automatically): `cupy-cuda13x`, `numpy`,
+`xarray`, `pysolar`, `pytz`, and `tqdm`. The example scripts additionally need
+`matplotlib` and `netCDF4`.
 
 ## Installation
 
@@ -28,7 +32,23 @@ correction. Solar positions are computed with [pysolar](https://pysolar.readthed
 pip install .
 ```
 
-CuPy must match your local CUDA version. For example, with CUDA 12.x:
+To also pull in the dependencies needed to run the example scripts
+(`matplotlib`, `netCDF4`):
+
+```bash
+pip install ".[examples]"
+```
+
+Alternatively, install dependencies directly from the requirements files:
+
+```bash
+pip install -r requirements.txt           # core runtime only
+pip install -r requirements-examples.txt  # core + example extras
+```
+
+CuPy must match your local CUDA version. The default dependency
+(`cupy-cuda13x`) targets CUDA 13.x; for a different toolkit, install the
+matching wheel first. For example, with CUDA 12.x:
 
 ```bash
 pip install cupy-cuda12x
@@ -100,10 +120,21 @@ sunlight. With `'sum'`, values are raw accumulations over the time steps.
 
 All arrays are returned on-GPU as CuPy arrays. Call `.get()` to transfer to NumPy.
 
-## Example
+## Examples
 
-A full example computing hourly insolation for the Wrangell Ice Cap is in
-[`examples/wrangell/`](examples/wrangell/).
+Worked examples for the Wrangell Ice Cap live in
+[`examples/wrangell/`](examples/wrangell/). They load a DEM from NetCDF, run the
+calculator, and visualize the result over a hillshade with matplotlib:
+
+- [`monthly_insolation.py`](examples/wrangell/monthly_insolation.py) — computes
+  monthly mean solar potential for a full year with atmospheric attenuation
+  enabled (`clearsky_transmittance=0.7`) and writes the result to NetCDF.
+- [`diurnal_insolation.py`](examples/wrangell/diurnal_insolation.py) — evaluates
+  instantaneous potential at 3-hour intervals over a single day and renders a
+  composite figure of the diurnal shadow pattern.
+
+Install the example extras first (`pip install ".[examples]"`), then run a
+script from the `examples/wrangell/` directory.
 
 ## License
 
