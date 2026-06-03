@@ -13,7 +13,7 @@ authors = [
     { name = "glide-ism" },
 ]
 dependencies = [
-    "cupy",
+    "cupy-cuda12x",
     "numpy",
     "xarray",
     "pysolar",
